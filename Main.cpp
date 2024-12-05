@@ -1,17 +1,25 @@
 #include<iostream> //output library: a file of prewritten code
+#include<string> //allows the use of getline and compare
+#include<Windows.h> // allows pause, sound, and text color change
 using namespace std; //cheat code that makes io stream easier to use
 
 int Player_Health = 100;
 int Player_Mental_Health = 25;
 int Player_Stamana = 50;
 int Player_Resets = 0;
+int Player_Mana = 0;
+bool Has_Visited_Room[100];
 string pocket_invintory[4];
 string backpack_invintory[10];
 
 
 int main() {//starting point of your program!
-	
+	srand(time(NULL));
+	bool has_backpack = false;
 	//for random spawn locations use bools as the conditional
+	for (int i = 0; i <= 99; i++) {
+		Has_Visited_Room[i] = false;
+	}
 	cout << "Welcome to the dream..." << endl << "We hope you have a good time..." << endl << endl;
 	cout << "You turn on the lights and find the room to be unfimiliar." << endl; // if turn on lights
 	cout << "There is a door to the east a closet to the south and a window to the west" << endl; // if look
@@ -20,25 +28,44 @@ int main() {//starting point of your program!
 	cout << "You try to open the door and find it is locked" << endl; //if door
 	string input;
 	int room = 1;
-	while (true) {
+	while (Player_Resets <= 5) {
+
+		if (Player_Mana < 50) {
+			Player_Mana++;
+		}
+		if (Player_Health <= 0) {
+			Player_Resets++;
+		}
+
 		switch (room) {
+		
 		case 1:
-			cout << "You wake up in a bed, it is very dark" << endl;
 			//cout << "You are in a bedroom" << endl;
-			cin >> input;
-			if (input == "light") {
-				cout << "You form a small ball of light in your hand." << endl << "With the ";
+			getline(cin, input);
+			if (!Has_Visited_Room[room - 1] && Player_Resets == 0) {
+				cout << "You wake up in a bed, it is very dark" << endl;
+				if (input == "light") {
+					cout << "You form a small ball of light in your hand." << endl << "With the light you can see an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east, and an attached wardorbe to the south";
+					Player_Mana -= 2;
+
+				}
+				else {
+					cout << "You try to move around, but it is too dark to see anything and you hit a wall hurting yourself" << endl;
+
+				}
+			}// first runthough
+			if (input == "east" || input.compare("go east") == 0) {
+				room = 3;//hallway
 			}
-			if (input == "east")
-				room = 3;
-			else if (input == "south")
-				room = 2;
+			else if (input == "south" || input.compare("go south") == 0) {
+				room = 2;//wardrobe
+			}
 			break;
 		case 2:
 			//cout << "You are in the wardrobe" << endl;
 			cin >> input;
-			if (input == "north")
-				room = 1;
+			if (input == "north" || input.compare("go north") == 0)
+				room = 1;//bedroom
 			break;
 		case 3:
 			//cout << "You are in the hallway" << endl;
