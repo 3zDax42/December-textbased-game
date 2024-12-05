@@ -7,7 +7,7 @@ int Player_Health = 100;
 int Player_Mental_Health = 25;
 int Player_Stamana = 50;
 int Player_Resets = 0;
-int Player_Mana = 0;
+int Player_Mana = 50;
 bool Has_Visited_Room[100];
 string pocket_invintory[4];
 string backpack_invintory[10];
@@ -21,11 +21,8 @@ int main() {//starting point of your program!
 		Has_Visited_Room[i] = false;
 	}
 	cout << "Welcome to the dream..." << endl << "We hope you have a good time..." << endl << endl;
-	cout << "You turn on the lights and find the room to be unfimiliar." << endl; // if turn on lights
-	cout << "There is a door to the east a closet to the south and a window to the west" << endl; // if look
-	cout << "You go to the window and find you are on the third floor of an apartment" << endl; //if window
-	cout << "It is dark but you can tell that you are no longer in the city" << endl; // time sleep continuation of if window
-	cout << "You try to open the door and find it is locked" << endl; //if door
+	//cout << "You go to the window and find you are on the third floor of an apartment" << endl; //if window
+	//cout << "It is dark but you can tell that you are no longer in the city" << endl; // time sleep continuation of if window
 	string input;
 	int room = 1;
 	while (Player_Resets <= 5) {
@@ -44,18 +41,24 @@ int main() {//starting point of your program!
 			getline(cin, input);
 			if (!Has_Visited_Room[room - 1] && Player_Resets == 0) {
 				cout << "You wake up in a bed, it is very dark" << endl;
-				if (input == "light") {
+				if (input == "light" || input.compare("make light") == 0) {
 					cout << "You form a small ball of light in your hand." << endl << "With the light you can see an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east, and an attached wardorbe to the south";
 					Player_Mana -= 2;
 
 				}
 				else {
 					cout << "You try to move around, but it is too dark to see anything and you hit a wall hurting yourself" << endl;
-
+					Player_Health--;
 				}
 			}// first runthough
 			if (input == "east" || input.compare("go east") == 0) {
-				room = 3;//hallway
+				if (pocket_invintory[0] == "small key") {
+					cout << "You go to the door and find it is locked, but the key you found in the desk fits perfectly and the door creaks open." << endl;
+					room = 3;//hallway
+				}
+				else {
+					cout << "You walk to the door and find it is locked" << endl;
+				}
 			}
 			else if (input == "south" || input.compare("go south") == 0) {
 				room = 2;//wardrobe
