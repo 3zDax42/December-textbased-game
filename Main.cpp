@@ -12,6 +12,8 @@ bool Has_Visited_Room[100];
 string pocket_invintory[4];
 string backpack_invintory[10];
 
+void Help();
+
 
 int main() {//starting point of your program!
 	srand(time(NULL));
@@ -36,43 +38,46 @@ int main() {//starting point of your program!
 
 		switch (room) {
 		
-		case 1:
+		case 1://****************************************************************************
 			//cout << "You are in a bedroom" << endl;
-			getline(cin, input);
 			if (!Has_Visited_Room[room - 1] && Player_Resets == 0) {
-				cout << "You wake up in a bed, it is very dark" << endl;
-				if (input == "light" || input.compare("make light") == 0) {
-					cout << "You form a small ball of light in your hand." << endl << "With the light you can see an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east, and an attached wardorbe to the south";
-					Player_Mana -= 2;
+				do {
+					cout << "You wake up in a bed, it is very dark" << endl;
+					getline(cin, input);
+					if (input == "light" || input.compare("make light") == 0) {
+						cout << "You form a small ball of light in your hand." << endl << "With the light you can see an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east, and an attached wardorbe to the south";
+						Player_Mana -= 2;
 
-				}
-				else {
-					cout << "You try to move around, but it is too dark to see anything and you hit a wall hurting yourself" << endl;
-					Player_Health--;
-				}
-			}// first runthough
+					}
+					else {
+						cout << "You try to move around, but it is too dark to see anything and you hit a wall hurting yourself" << endl;
+						Player_Health--;
+					}
+				} while (!Has_Visited_Room[room - 1]);// first runthough of first room
+			}
+			getline(cin, input);
 			if (input == "east" || input.compare("go east") == 0) {
 				if (pocket_invintory[0] == "small key") {
 					cout << "You go to the door and find it is locked, but the key you found in the desk fits perfectly and the door creaks open." << endl;
-					room = 3;//hallway
+					room = 3;//go to hallway
 				}
 				else {
 					cout << "You walk to the door and find it is locked" << endl;
 				}
 			}
 			else if (input == "south" || input.compare("go south") == 0) {
-				room = 2;//wardrobe
+				room = 2;//go to wardrobe
 			}
 			break;
-		case 2:
+		case 2://****************************************************************************
 			//cout << "You are in the wardrobe" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "north" || input.compare("go north") == 0)
 				room = 1;//bedroom
 			break;
-		case 3:
+		case 3://****************************************************************************
 			//cout << "You are in the hallway" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "northeast")
 				room = 4;
 			else if (input == "southeast")
@@ -82,21 +87,21 @@ int main() {//starting point of your program!
 			else if (input == "south")
 				room = 6;
 			break;
-		case 4:
+		case 4://****************************************************************************
 			//cout << "You are in the bedroom" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "west")
 				room = 3;
 			break;
-		case 5:
+		case 5://****************************************************************************
 			//cout << "You are in the bathroom" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "west")
 				room = 3;
 			break;
-		case 6:
+		case 6://****************************************************************************
 			//cout << "You are in the living room" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "north")
 				room = 3;
 			else if (input == "east")
@@ -104,23 +109,23 @@ int main() {//starting point of your program!
 			else if (input == "west")
 				room = 7;
 			break;
-		case 7:
+		case 7://****************************************************************************
 			//cout << "You are in the kitction" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "north")
 				room = 8;
 			else if (input == "east")
 				room = 6;
 			break;
-		case 8:
+		case 8://****************************************************************************
 			//cout << "You are in a hidden room" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "south")
 				room = 7;
 			break;
-		case 9:
+		case 9://****************************************************************************
 			//cout << "You are in the foyer" << endl;
-			cin >> input;
+			getline(cin, input);
 			if (input == "west")
 				room = 6;
 			break;
