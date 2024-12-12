@@ -12,6 +12,8 @@ int Player_Mana = 50;
 int Mana_Stones_Greater = 0;
 int Mana_Stones_Lesser = 0;
 bool Has_Visited_Room[100];
+bool Strong_Poison = false;
+bool Weak_Poison = false;
 string pocket_invintory[4];
 string backpack_invintory[10];
 //Functions
@@ -32,7 +34,7 @@ int main() {//starting point of your program!
 	//cout << "It is dark but you can tell that you are no longer in the city" << endl; // time sleep continuation of if window
 	string input;
 	int room = 1;
-	while (Player_Resets <= 5) {
+	while (Player_Resets <= 5) {//****Runs every time
 
 		if (Player_Mana < 50) {
 			Player_Mana++;
@@ -40,7 +42,15 @@ int main() {//starting point of your program!
 		if (Player_Health <= 0) {
 			Player_Resets++;
 		}
+		if (Weak_Poison == true) {
+			Player_Health--;
+		}
+		if (Strong_Poison == true) {
+			Player_Health -= 3;
+		}
 
+
+		//****Runs every time
 		switch (room) {
 
 		case 1://****************************************************************************
@@ -51,7 +61,7 @@ int main() {//starting point of your program!
 					Can_See = false;
 					getline(cin, input);
 					if ((input == "light" || input.compare("make light") == 0) && Can_See == false) {
-						cout << "You form a small ball of light in your hand." << endl << "With the light you can see an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east with a light swich, and an attached wardorbe to the south";
+						cout << "You form a small ball of light in your hand." << endl << "With the light you can see an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east with a light swich, and an attached wardorbe to the south" << endl;
 						Player_Mana -= 2;
 						Can_See = true;
 					}
@@ -62,7 +72,8 @@ int main() {//starting point of your program!
 						Status();
 					}
 					else if (input == "look" || input.compare("look around") == 0) {
-						cout << "it is very dark and you can't see" << endl;
+						if (Can_See == false) { cout << "it is very dark and you can't see" << endl; }
+						else { cout << "There is an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east with a light swich, and an attached wardorbe to the south" << endl; }
 					}
 					else {
 						cout << "You try to move around, but it is too dark to see anything and you hit a wall hurting yourself" << endl;
@@ -72,13 +83,14 @@ int main() {//starting point of your program!
 						room = 2;
 						Has_Visited_Room[room - 1] = true;
 					}
-					else if ((input == "desk" || input.compare("look in desk") == 0) && Can_See == true) {
+					else if ((input == "desk" || input.compare("look at desk") == 0) && Can_See == true) {
 						if (pocket_invintory[0] == "small key") {
 							cout << "You look in the desk" << endl << "There is a bunch of trash in the desk but nothing else of note" << endl;
 						}
 						else {
-							cout << "You look in the desk" << endl << "There is a bunch of trash filling it, but a small shiny object cheches you eye" << endl << "You grab the item and find it to be a small key ..... maybe it will be usefull somewhere";
+							cout << "On the desk there seems to be a small bag" << endl << "Picking it up you see it has a peculiar pattern on it and it gives off a unique mana signature" << endl << "Looking in the desk you see there is a bunch of trash filling it, but a small shiny object cheches you eye" << endl << "You grab the item and find it to be a small key ..... maybe it will be usefull somewhere";
 							pocket_invintory[0] = "small key";
+							pocket_invintory[1] = "spatial bag";
 						}
 					}
 					else if ((input == "east" || input.compare("go east") == 0) && Can_See == true) {
@@ -89,15 +101,26 @@ int main() {//starting point of your program!
 						}
 						else {
 							cout << "You walk to the door and find it is locked" << endl;
-							Has_Visited_Room[room - 1] = true;
 						}
+					}
+					else if ((input == "window" || input.compare("look out window") == 0) && Can_See == true) {
+						cout << "Pulling aside the blinds you see nothing out the window. Nothing exept an black abiss that seems to consume everything." << endl;
+						cout << "What is this place?" << endl;
+						system("pause");
+						cout << "How did I get here?" << endl;
+						system("pause");
+						cout << "Is this a dream?" << endl;
 					}
 				} while (!Has_Visited_Room[room - 1]);// first runthough of first room
 			}
 			getline(cin, input);
 			if (input == "east" || input.compare("go east") == 0) {
-				if (pocket_invintory[0] == "small key") {
+				if (pocket_invintory[0] == "small key" && !Has_Visited_Room[room-1]) {
 					cout << "You go to the door and find it is locked, but the key you found in the desk fits perfectly and the door creaks open." << endl;
+					room = 3;//go to hallway
+				}
+				else if (pocket_invintory[0] == "small key") {
+					cout << "The door creaks as it opens" << endl;
 					room = 3;//go to hallway
 				}
 				else {
@@ -119,6 +142,7 @@ int main() {//starting point of your program!
 			break;
 		case 3://****************************************************************************
 			//cout << "You are in the hallway" << endl;
+
 			getline(cin, input);
 			if (input == "northeast" || input.compare("go northeast") == 0)
 				room = 4;
@@ -176,6 +200,7 @@ int main() {//starting point of your program!
 			break;
 		}//end of switch
 	}//end of while loop
+	cout << " ----- End Of Game ----- " << endl;
 }//end of main
 
 
@@ -189,14 +214,18 @@ void Help() {
 
 }
 void Status() {
-	cout << "Your health is " << Player_Health << endl << "Your stamana is " << Player_Stamana << endl << "Your mana is" << Player_Mana << endl;
+	cout << "Your health is " << Player_Health << endl << "Your stamana is " << Player_Stamana << endl << "Your mana is " << Player_Mana << endl;
+	if (Strong_Poison == true || Weak_Poison == true) {
+		cout << "You feel as if breathing is geting harder by the second" << endl;
+	}
 }
 void Random_item_gen() {
 	int num = rand() % 100 + 1;
 	if (num > 95) {//5% chance
 		cout << "You see an empty vase rolled over on it's side" << endl << "Appon further inpsection you find a spider in the vase" << endl << "Frightend the spider runs out, bites you and runs off";
 		if (num > 99) {
-			Player_Health -= 10;
+			Player_Health -= 2;
+			Weak_Poison = true;
 			cout << "The bite is exteamly painful and blackens the skin that was biten" << endl;
 		}
 		else {
