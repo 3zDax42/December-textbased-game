@@ -19,8 +19,11 @@ string backpack_invintory[10];
 //Functions
 void Help();
 void Status();
+//void Shop();
 void Random_item_gen();
 void Single_String_Knot_AsciiArt();
+
+
 
 int main() {//starting point of your program!
 	srand(time(NULL));
@@ -54,9 +57,14 @@ int main() {//starting point of your program!
 		//****Runs every time
 		switch (room) {
 
-		case 1://****************************************************************************
+		case 1://********************************************************************************************************************************************
 			//cout << "You are in a bedroom" << endl;
 			if (!Has_Visited_Room[room - 1] && Player_Resets == 0) {
+				Beep(1600, 300);
+				Beep(1600, 200);
+				Beep(1600, 300);
+				Beep(1600, 200);
+				system("pause");
 				cout << "You wake up in a bed, it is very dark" << endl;
 				Can_See = false;
 				do {
@@ -66,6 +74,7 @@ int main() {//starting point of your program!
 							cout << "You form a small ball of light in your hand." << endl << "With the light you can see an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east with a light swich, and an attached wardorbe to the south" << endl;
 							Player_Mana -= 2;
 							Can_See = true;
+							Has_Visited_Room[room - 1] = true;
 						}
 						else if (input == "help") {
 							Help();
@@ -81,42 +90,6 @@ int main() {//starting point of your program!
 							cout << "You try to move around, but it is too dark to see anything and you hit a wall hurting yourself" << endl;
 							Player_Health--;
 						}
-					}
-					if ((input == "south" || input.compare("go south") == 0) && Can_See == true) {
-						room = 2;//go to wardrobe
-						Has_Visited_Room[room - 1] = true;
-					}
-					else if ((input == "desk" || input.compare("look at desk") == 0) && Can_See == true) {
-						if (pocket_invintory[0] == "small key") {
-							cout << "You look in the desk" << endl << "There is a bunch of trash in the desk but nothing else of note" << endl;
-						}
-						else {
-							cout << "On the desk there seems to be a small bag" << endl << "Picking it up you see it has a peculiar pattern on it and it gives off a unique mana signature" << endl << "Looking in the desk you see there is a bunch of trash filling it, but a small shiny object cheches you eye" << endl << "You grab the item and find it to be a small key ..... maybe it will be usefull somewhere";
-							pocket_invintory[0] = "small key";
-							pocket_invintory[1] = "spatial bag";
-						}
-					}
-					else if ((input == "east" || input.compare("go east") == 0) && Can_See == true) {
-						if (pocket_invintory[0] == "small key") {
-							cout << "You go to the door and find it is locked, but the key you found in the desk fits perfectly and the door creaks open." << endl;
-							room = 3;//go to hallway
-							Has_Visited_Room[room - 1] = true;
-							break;
-						}
-						else {
-							cout << "You walk to the door and find it is locked" << endl;
-						}
-					}
-					else if ((input == "window" || input.compare("look out window") == 0) && Can_See == true) {
-						cout << "Pulling aside the blinds you see nothing out the window. Nothing exept an black abiss that seems to consume everything." << endl;
-						cout << "What is this place?" << endl;
-						system("pause");
-						cout << "How did I get here?" << endl;
-						system("pause");
-						cout << "Is this a dream?" << endl;
-					}
-					else if (input == "look" || input.compare("look around") == 0) {
-						cout << "There is an old desk next to the bed, a window that is covered by blinds to the west, a doorway to the east with a light swich, and an attached wardorbe to the south" << endl;
 					}
 					else if (input == "help") {
 						Help();
@@ -170,17 +143,33 @@ int main() {//starting point of your program!
 				}
 				else {
 					cout << "On the desk there seems to be a small bag" << endl << "Picking it up you see it has a peculiar pattern on it and it gives off a unique mana signature" << endl << "Looking in the desk you see there is a bunch of trash filling it, but a small shiny object cheches you eye" << endl << "You grab the item and find it to be a small key ..... maybe it will be usefull somewhere";
+					Single_String_Knot_AsciiArt();
 					pocket_invintory[0] = "small key";
 					pocket_invintory[1] = "spatial bag";
 				}
 			}
+			else {
+				cout << "You should stop hurting your self" << endl;
+				Player_Health--;
+			}
 			
 			break;
-		case 2://****************************************************************************
-			cout << "You are in the wardrobe" << endl;
+		case 2://********************************************************************************************************************************************
+			if (!Has_Visited_Room[room - 1]) {
+				cout << "Walking into the wardrobe you see a few old coats hungs up. They all seem to be infested with mothballs." << endl << "On the ground you see a backpack and mana stones scattered on the ground." << endl;
+			}
+			else {
+				cout << "You walk into the wardrobe" << endl;
+			}
 			getline(cin, input);
-			if (input == "north" || input.compare("go north") == 0)
+			if (!Has_Visited_Room[room - 1]) {
+
+			}
+			else if (input == "north" || input.compare("go north") == 0) {
 				room = 1;//bedroom
+				Has_Visited_Room[room - 1] = true;
+			}
+			
 			else if (input == "help") {
 				Help();
 			}
@@ -188,32 +177,36 @@ int main() {//starting point of your program!
 				Status();
 			}
 			break;
-		case 3://****************************************************************************
+		case 3://********************************************************************************************************************************************
 			cout << "You are in the hallway" << endl;
 
 			getline(cin, input);
-			if (input == "northeast" || input.compare("go northeast") == 0)
+			if (input == "northeast" || input.compare("go northeast") == 0) {
 				room = 4;
-			else if (input == "southeast" || input.compare("go southeast") == 0)
+			}
+			else if (input == "southeast" || input.compare("go southeast") == 0) {
 				room = 5;
-			else if (input == "west" || input.compare("go west") == 0)
+			}
+			else if (input == "west" || input.compare("go west") == 0) {
 				room = 1;
-			else if (input == "south" || input.compare("go south") == 0)
+			}
+			else if (input == "south" || input.compare("go south") == 0) {
 				room = 6;
+			}
 			break;
-		case 4://****************************************************************************
+		case 4://********************************************************************************************************************************************
 			//cout << "You are in the bedroom" << endl;
 			getline(cin, input);
 			if (input == "west" || input.compare("go west") == 0)
 				room = 3;
 			break;
-		case 5://****************************************************************************
+		case 5://********************************************************************************************************************************************
 			//cout << "You are in the bathroom" << endl;
 			getline(cin, input);
 			if (input == "west" || input.compare("go west") == 0)
 				room = 3;
 			break;
-		case 6://****************************************************************************
+		case 6://********************************************************************************************************************************************
 			//cout << "You are in the living room" << endl;
 			getline(cin, input);
 			if (input == "north" || input.compare("go north") == 0)
@@ -223,7 +216,7 @@ int main() {//starting point of your program!
 			else if (input == "west" || input.compare("go west") == 0)
 				room = 7;
 			break;
-		case 7://****************************************************************************
+		case 7://********************************************************************************************************************************************
 			//cout << "You are in the kitction" << endl;
 			getline(cin, input);
 			if (input == "north" || input.compare("go north") == 0)
@@ -231,13 +224,13 @@ int main() {//starting point of your program!
 			else if (input == "east" || input.compare("go east") == 0)
 				room = 6;
 			break;
-		case 8://****************************************************************************
+		case 8://********************************************************************************************************************************************
 			//cout << "You are in a hidden room" << endl;
 			getline(cin, input);
 			if (input == "south" || input.compare("go south") == 0)
 				room = 7;
 			break;
-		case 9://****************************************************************************
+		case 9://********************************************************************************************************************************************
 			//cout << "You are in the foyer" << endl;
 			getline(cin, input);
 			if (input == "west" || input.compare("go west") == 0)
@@ -245,7 +238,7 @@ int main() {//starting point of your program!
 			else if (input == "east" || input.compare("go east") == 0)
 				room = 10;
 			break;
-		case 10://***************************************************************************
+		case 10://*******************************************************************************************************************************************
 			//cout << "You are in the apartment hallway" << endl;
 			getline(cin, input);
 			if (input == "west" || input.compare("go west") == 0)
@@ -275,6 +268,36 @@ void Status() {
 		cout << "You feel as if breathing is geting harder by the second" << endl;
 	}
 }
+//void Shop() {
+//	cout << endl << "-----" << "Welcome to the shop...(use charactors)" << "-----" << endl;
+//	char input = 'e';
+//	cout << "" << endl << "" << endl;
+//	cin >> input;
+//	while (input != 'q' || input == 'n') {
+//		cout << "We have this ." << endl << "Or would you prefer this ?" << endl;
+//		cin >> input;
+//		switch (input) {
+//		case 'c':
+//			if ( >= ) {
+//				
+//			}
+//			else {
+//				cout << "Are you tring to cheat me of my stuff? Get out of here." << endl << endl << "...The Shopkeeper kicks you out...";
+//				input = 'q';
+//			}
+//		case 'm':
+//			if ( >= ) {
+//				
+//			}
+//			else {
+//				cout << "Are you tring to cheat me of my stuff? Get out of here." << endl << endl << "...The Shopkeeper kicks you out...";
+//				input = 'q';
+//			}
+//			break;
+//		}//end of switch
+//
+//	}//end of loop
+//}
 void Random_item_gen() {
 	int num = rand() % 100 + 1;
 	if (num > 95) {//5% chance
@@ -303,21 +326,22 @@ void Random_item_gen() {
 	}
 }
 void Single_String_Knot_AsciiArt() {
-	cout << "        ___________";
-	cout << "	    |           |";
-	cout << "       |    ___    |";
-	cout << "       |   |   |   |";
-	cout << " ______|   |___|___|______";
-	cout << "|      |   |              |";
-	cout << "|   ___|   |_______ ___   |";
-	cout << "|  |   |   |   |   |   |  |";
-	cout << "|  |___|___|___|   |___|  |";
-	cout << "|              |   |      |";
-	cout << "|______________|   |______|";
-	cout << "       |   |   |   |";
-	cout << "       |   |___|   |";
-	cout << "       |           |";
-	cout << "       |___________|";
+	cout << endl ;
+	cout << "        ___________" << endl;
+	cout << "       |           |" << endl;
+	cout << "       |    ___    |" << endl;
+	cout << "       |   |   |   |" << endl;
+	cout << " ______|   |___|___|______" << endl;
+	cout << "|      |   |              |" << endl;
+	cout << "|   ___|   |_______ ___   |" << endl;
+	cout << "|  |   |   |   |   |   |  |" << endl;
+	cout << "|  |___|___|___|   |___|  |" << endl;
+	cout << "|              |   |      |" << endl;
+	cout << "|______________|   |______|" << endl;
+	cout << "       |   |   |   |" << endl;
+	cout << "       |   |___|   |" << endl;
+	cout << "       |           |" << endl;
+	cout << "       |___________|" << endl;
 
 }
 //void number_puzzle() {
