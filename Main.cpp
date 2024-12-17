@@ -122,7 +122,7 @@ int main() {//starting point of your program!
 				Has_Visited_Room[room - 1] = true;
 			}
 			else if (input == "window" || input.compare("look out window") == 0) {
-				cout << "Pulling aside the blinds you see nothing out the window. Nothing exept an black abiss that seems to consume everything." << endl;
+				cout << "Pulling aside the blinds you see nothing out the window. Nothing exept an black abyss that seems to consume everything." << endl;
 				cout << "What is this place?" << endl;
 				system("pause");
 				cout << "How did I get here?" << endl;
@@ -160,9 +160,9 @@ int main() {//starting point of your program!
 			break;
 		case 2://********************************************************************************************************************************************
 			if (!Has_Visited_Room[room - 1]) {
-				cout << "Walking into the wardrobe you see a few old coats hungs up. They all seem to be infested with mothballs." << endl << "On the ground you see a backpack and mana stones scattered on the ground." << endl;
+				cout << "Walking into the wardrobe you see a few old coats hungs up. They all seem to be infested with mothballs." << endl << "On the ground you see a backpack and mana stones scattered on the floor." << endl;
 			}
-			else {
+			else if (Has_Visited_Room[room-1]){
 				cout << "You walk into the wardrobe" << endl;
 			}
 			getline(cin, input);
@@ -175,8 +175,11 @@ int main() {//starting point of your program!
 			}
 			else if (input == "look" || input.compare("look around") == 0) {
 				cout << "You see a few old coats hungs up. They all seem to be infested with mothballs." << endl;
-				if (!Has_Visited_Room[room - 1]) {
-
+				if (!Has_Visited_Room[room - 1] && !has_backpack) {
+					cout << "On the ground you see a backpack and mana stones scattered on the floor." << endl;
+				}
+				else if (!Has_Visited_Room[room - 1] && has_backpack) {
+					cout << "You have already picked up the floor though so it looks clean." << endl;
 				}
 			}
 			else if (input == "inventory") {
@@ -276,11 +279,15 @@ void Help() {
 
 }
 void Inventory() {
-	for (int i = 0; i <= 20; i++) {
+	cout << endl;
+	for (int i = 0; i < 10; i++) {
 		cout << " || " << pocket_inventory[i] << " || ";
+	}
+	for (int i = 0; i < 20; i++) {
 		cout << " || " << backpack_inventory[i] << " || ";
 	}
-	cout << endl;
+	
+	cout << endl << endl;
 }
 void Status() {
 	cout << "Your health is " << Player_Health << endl << "Your stamana is " << Player_Stamana << endl << "Your mana is " << Player_Mana << endl;
@@ -290,6 +297,7 @@ void Status() {
 }
 //void Shop() {
 //	cout << endl << "-----" << "Welcome to the shop...(use charactors)" << "-----" << endl;
+//system("color F3");
 //	char input = 'e';
 //	cout << "" << endl << "" << endl;
 //	cin >> input;
@@ -317,6 +325,7 @@ void Status() {
 //		}//end of switch
 //
 //	}//end of loop
+// system("color 0F");
 //}
 void Random_item_gen() {
 	int num = rand() % 100 + 1;
