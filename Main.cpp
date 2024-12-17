@@ -14,10 +14,11 @@ int Mana_Stones_Lesser = 0;
 bool Has_Visited_Room[100];
 bool Strong_Poison = false;
 bool Weak_Poison = false;
-string pocket_invintory[4];
-string backpack_invintory[10];
+string pocket_inventory[10];
+string backpack_inventory[20];
 //Functions
 void Help();
+void Inventory();
 void Status();
 //void Shop();
 void Random_item_gen();
@@ -102,12 +103,12 @@ int main() {//starting point of your program!
 			}
 			getline(cin, input);
 			if (input == "east" || input.compare("go east") == 0) {
-				if (pocket_invintory[0] == "small key" && !Has_Visited_Room[room+1]) {
+				if (pocket_inventory[0] == "small key" && !Has_Visited_Room[room+1]) {
 					cout << "You go to the door and find it is locked, but the key you found in the desk fits perfectly and the door creaks open." << endl;
 					room = 3;//go to hallway
 					Has_Visited_Room[room - 1] = true;
 				}
-				else if (pocket_invintory[0] == "small key") {
+				else if (pocket_inventory[0] == "small key") {
 					cout << "The door creaks as it opens" << endl;
 					room = 3;//go to hallway
 					Has_Visited_Room[room - 1] = true;
@@ -137,15 +138,18 @@ int main() {//starting point of your program!
 			else if (input == "status") {
 				Status();
 			}
+			else if (input == "inventory") {
+				Inventory();
+			}
 			else if (input == "desk" || input.compare("look at desk") == 0) {
-				if (pocket_invintory[0] == "small key") {
+				if (pocket_inventory[0] == "small key") {
 					cout << "You look in the desk" << endl << "There is a bunch of trash in the desk but nothing else of note" << endl;
 				}
 				else {
 					cout << "On the desk there seems to be a small bag" << endl << "Picking it up you see it has a peculiar pattern on it and it gives off a unique mana signature" << endl << "Looking in the desk you see there is a bunch of trash filling it, but a small shiny object cheches you eye" << endl << "You grab the item and find it to be a small key ..... maybe it will be usefull somewhere";
 					Single_String_Knot_AsciiArt();
-					pocket_invintory[0] = "small key";
-					pocket_invintory[1] = "spatial bag";
+					pocket_inventory[0] = "small key";
+					pocket_inventory[1] = "spatial bag";
 				}
 			}
 			else {
@@ -169,7 +173,15 @@ int main() {//starting point of your program!
 				room = 1;//bedroom
 				Has_Visited_Room[room - 1] = true;
 			}
-			
+			else if (input == "look" || input.compare("look around") == 0) {
+				cout << "You see a few old coats hungs up. They all seem to be infested with mothballs." << endl;
+				if (!Has_Visited_Room[room - 1]) {
+
+				}
+			}
+			else if (input == "inventory") {
+				Inventory();
+			}
 			else if (input == "help") {
 				Help();
 			}
@@ -259,8 +271,16 @@ void Help() {
 	cout << "Type in \"north\", or \"go north\" to move rooms" << endl;
 	cout << "Type in \"south\", or \"go south\" to move rooms" << endl;
 	cout << "Type in \"status\" to veiw your Health, Stamana and Mana" << endl;
+	cout << "Type in \"items\" to veiw the items in your invintory" << endl;
 	cout << "Type in \"look\", or \"look around\" to hear what the room looked like again" << endl;
 
+}
+void Inventory() {
+	for (int i = 0; i <= 20; i++) {
+		cout << " || " << pocket_inventory[i] << " || ";
+		cout << " || " << backpack_inventory[i] << " || ";
+	}
+	cout << endl;
 }
 void Status() {
 	cout << "Your health is " << Player_Health << endl << "Your stamana is " << Player_Stamana << endl << "Your mana is " << Player_Mana << endl;
