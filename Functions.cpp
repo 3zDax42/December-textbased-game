@@ -1,13 +1,28 @@
-#include<iostream> //output library: a file of prewritten code
-#include<string> //allows the use of getline and compare
-#include<Windows.h> // allows pause, sound, and text color change
-using namespace std;
+//Where would I put the Has_Been_in_Room variable? >.< ?
 
-void Help() {
-	cout << "Type in \"w\", \"west\", or \"go west\" to move rooms" << endl;
-	cout << "Type in \"e\", \"east\", or \"go east\" to move rooms" << endl;
-	cout << "Type in \"n\", \"north\", or \"go north\" to move rooms" << endl;
-	cout << "Type in \"s\", \"south\", or \"go south\" to move rooms" << endl;
-	cout << "Type in \"status\" to veiw your Health, Stamana and Mana" << endl;
+class Player {
+private:
+int Max_Player_Health
+int Player_Health
+int Max_Player_Stamina
+int Player_Stamina
+int Player_Mana
+int Player_Mana_Regen
+
+
+}
+
+class Spell {
+private:
+int Mana_Cost
+int Damage
+string Damage_Type
+public:
+void Set_Variables(int cost, int dam, string type) {Mana_Cost = cost; Damage = dam; Damage_Type = type}
+}
+int main()
+{
+Spell Light_Ball;
+Light_Ball.Set_Variables(3, 2, "light");
 
 }
